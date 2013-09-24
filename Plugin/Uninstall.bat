@@ -1,0 +1,1 @@
+..\PluginInstaller\HansoftClientPluginInstaller.exe -clocalhost:50257:"SAFe - Template":sdk:sdk -ucom.hansoft.safeextension.safeclientplugin
