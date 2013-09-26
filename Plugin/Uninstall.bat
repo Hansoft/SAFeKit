@@ -1,1 +1,1 @@
-..\PluginInstaller\HansoftClientPluginInstaller.exe -clocalhost:50257:"SAFe - Template":Jean:welcome -ucom.hansoft.safeextension.safeclientplugin
+..\PluginInstaller\HansoftClientPluginInstaller.exe -clocalhost:50256:"SAFe - Template":Jean:welcome -ucom.hansoft.safeextension.safeclientplugin
