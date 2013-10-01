@@ -21,4 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-Note: Scaled Agile Framework and SAFe are trademarks of Leffingwell, LLC.
+Scaled Agile Framework and SAFe are trademarks of Leffingwell, LLC. These
+trademarks are only used for reference purpose and their use does imply any
+kind of endorsement of SAFe Support Kit for Hansoft by Leffingwell, LLC.
