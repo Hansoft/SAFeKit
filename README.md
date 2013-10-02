@@ -1,8 +1,8 @@
-SAFe Support Kit for Hansoft
-============================
+Hansoft Scaled Agile Support Kit
+================================
 
-SAFe Support Kit for Hansoft - An add-on to Hansoft for working with the Scaled Agile Framework
------------------------------------------------------------------------------------------------
+An add-on to Hansoft for working with the Scaled Agile Framework
+-----------------------------------------------------------------
 This kit is in part based on the available descriptions of the [Scaled Agile Framework] [1]. 
 
 The kit provides a “template” Hansoft database which defines a set of custom columns,
@@ -20,7 +20,7 @@ How to install and configure the kit is described in the document [SafeSupportKi
 
 Terms and conditions
 --------------------
-SAFe Support Kit for Hansoft by Svante Lidman (Hansoft AB) is licensed under what is known as an MIT
+Hansoft Scaled Agile Support Kit by Svante Lidman (Hansoft AB) is licensed under what is known as an MIT
 License as stated in the [LICENSE.md](LICENSE.md).
 
 This program is not part of the official Hansoft product or subject to its license agreement.
@@ -30,4 +30,4 @@ be answered when other obligations so permit.
 
 Scaled Agile Framework and SAFe are trademarks of Leffingwell, LLC. These trademarks are only
 used for reference purpose and their use does imply any kind of endorsement of
-SAFe Support Kit for Hansoft by Leffingwell, LLC.
+Hansoft Scaled Agile Support Kit by Leffingwell, LLC.
