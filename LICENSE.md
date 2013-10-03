@@ -22,5 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 Scaled Agile Framework and SAFe are trademarks of Leffingwell, LLC. These
-trademarks are only used for reference purpose and their use do not imply any
+trademarks are only used for reference purpose and their use does imply any
 kind of endorsement of Hansoft Scaled Agile Support Kit by Leffingwell, LLC.
