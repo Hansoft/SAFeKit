@@ -11,11 +11,11 @@ project schedule in Hansoft. To complement the template database there are addit
 customizations to automatically calculate/update summary fields with [Jean for Hansoft] [2]
 and also a Hansoft client plugin to add custom menu options to the Hansoft client.
 
-How to install and configure the kit is described in the document [SafeSupportKitForHansoft.docx] [3].
+How to install and configure the kit is described in the document [HansoftScaledAgileSupportKit.docx] [3].
 
 [1]: http://scaledagileframework.com/ "Scaled Agile Framework"
 [2]: http://github.com/Hansoft/Hansoft-Jean-Jean  "Jean for Hansoft"
-[3]: http://github.com/Hansoft/SAFeKit/blob/master/SafeSupportKitForHansoft.docx  "SafeSupportKitForHansoft.docx"
+[3]: http://github.com/Hansoft/SAFeKit/blob/master/HansoftScaledAgileSupportKit.docx  "HansoftScaledAgileSupportKit.docx"
 
 
 Terms and conditions
