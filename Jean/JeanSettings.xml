@@ -9,6 +9,7 @@
     <Assembly Path="TrackLastStatusChangeBehavior.dll" />
     <Assembly Path="AssignReleaseRiskBehavior.dll" />
     <Assembly Path="DerivedColumnExpressionExample.dll" />
+    <Assembly Path="CloneProjectBehavior.dll" />
     <Assembly Path="SAFeExtension.dll" />
   </LoadAssemblies>
   <!-- NOTE:
@@ -16,94 +17,63 @@
        See http://github.com/Hansoft/Hansoft-SAFeKit
        
        For a description of the generic behaviors and their parameters that are used below, please refer to the
-       standard JeanSettings.xml file for Jean. See: http://github.com/Hansoft/Hansoft-Jean-Jean
-  -->
+       standard JeanSettings.xml file for Jean. See: http://github.com/Hansoft/Hansoft-Jean-Jean -->
 
-  <Connection HansoftServerHost="localhost" HansoftServerPort="50256" HansoftDatabase="SAFe - Template" HansoftSdkUser="Jean" HansoftSdkUserPassword="welcome" EventWindow="500"/>
+  <Connection HansoftServerHost="localhost" HansoftServerPort="50257" HansoftDatabase="SAFe - Template" HansoftSdkUser="Jean" HansoftSdkUserPassword="welcome" EventWindow="500"/>
   <Behaviors>
+
+    <!-- To support instantiations of new projects (programs) from a template project  -->
+    <CloneProjectBehavior />
+
     <!-- ******************************** -->
     <!-- Customizations for the Portfolio -->
     <!-- ******************************** -->
-    <!-- This behavior is applied for all leaf backlog items in the backlog of the Portfolio project. It will:
-         - Update the Feature summary field on epics to reflect changes to linked features
-         - Automatically set the Theme column to the name of the parent item
-    -->
-    <DeriveBehavior HansoftProject="Portfolio" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
+    <!-- This behavior is applied for all leaf backlog items in the backlog of all projects with a name that starts
+         with the text 'Portfolio', i.e., the SAFe portfolio project. The behavior will:
+           - Update the Feature summary field on epics to reflect changes to linked features
+         - - Automatically set the Theme column to the name of the parent item -->
+    <DeriveBehavior HansoftProject="(^Portfolio)" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
       <CustomColumn Name="Feature summary" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.SAFeExtension.FeatureSummary(current_task)" />
       <CustomColumn Name="Theme" Expression="current_task.Parent.Name" />
     </DeriveBehavior>
 
-    <!-- **************************** -->
-    <!-- Customizations for Program 1 -->
-    <!-- **************************** -->
+    <!-- *************************** -->
+    <!-- Customizations for Programs -->
+    <!-- *************************** -->
+    <!-- The following behaviors are applied for all projects where the project name does NOT start with the 
+         text 'Portfolio' or the text 'Template - '. I.e., these projects are considered as SAFe programs. -->
+    
     <!-- This behavior is applied for all backlog items in the program backlog that have children. It will:
          - Update the "Velocity (14) days" column to always reflect the velocity over the last 14 days aggregated over the children of the item. Velocity is calculated as completed items where the status
-           was changed over the last 14 days.
-    -->
-    <DeriveBehavior HansoftProject="Program 1" View="Backlog" Find="!Itemtype=&quot;Backlog item&quot;">
+           was changed over the last 14 days. -->
+    <DeriveBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" Find="!Itemtype=&quot;Backlog item&quot;">
       <CustomColumn Name="Velocity (14 days)" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed) &amp;&amp; ((DateTimeValue)((Task)task).GetCustomColumnValue(&quot;Status last changed&quot;)).ToDateTime() > DateTime.Now.AddDays(-14)  ).Sum(task => ((Task)task).EstimatedDays)" />
     </DeriveBehavior>
+    
     <!-- This behavior is applied for all backlog items in the program backlog that are children. It will:
-         - Blank out the "Velocity (14) days" column.
-    -->
-    <DeriveBehavior HansoftProject="Program 1" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
+         - Blank out the "Velocity (14) days" column. -->
+    <DeriveBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
       <CustomColumn Name="Velocity (14 days)" Expression="&quot;&quot;" />
     </DeriveBehavior>
+    
     <!-- This behavior is applied for all backlog items in the program backlog. It will:
-         - Keep the Aggregated status column updated.
-         - Keep the Aggregated estimated days column updated.
-         - Keep the Days completed column updated.
-         - Keep the Completion count column updated.
-    -->
-    <DeriveBehavior HansoftProject="Program 1" View="Backlog" Find="">
+         - Keep the Aggregated status column updated
+         - Keep the Aggregated estimated days column updated
+         - Keep the Days completed column updated
+         - Keep the Completion count column updated -->
+    <DeriveBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" Find="">
       <CustomColumn Name="Aggregated status" Expression="current_task.AggregatedStatus" />
       <CustomColumn Name="Aggregated estimated days" Expression="current_task.AggregatedEstimatedDays" />
       <CustomColumn Name="Days completed" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed)).Sum(task => ((Task)task).EstimatedDays)" />
       <CustomColumn Name="Completion count" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.CompletionCounter.CompletionCount(current_task)" />
     </DeriveBehavior>
+    
     <!-- This behavior is applied for Release items (milestones) in the schedule that are placed in a container named "Features". For these releases all backlog items that are tagged
-         to the release will get the "Release Risk" column set.
-    -->
-    <AssignReleaseRiskBehavior HansoftProject="Program 1" TrackingColumn="Release risk" RiskValues="Done, Low risk, Medium risk, High risk" Find="Itemtype=Release AND Immediateparentsubproject:Item(Features)" PointsOrDays="Days" LowRiskLimit="80" HighRiskLimit="120" ElevateBlockedItems="Yes" ConsiderRiskColumn="No" />
-    <!-- This behavior will track the time status was last changed on items in the product backlog -->
-    <TrackLastStatusChangeBehavior HansoftProject="Program 1" View="Backlog" TrackingColumn="Status last changed" TrackedColumn="Aggregated status"/>
+         to the release will get the "Release Risk" column set. -->
+    <AssignReleaseRiskBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" TrackingColumn="Release risk" RiskValues="Done, Low risk, Medium risk, High risk" Find="Itemtype=Release AND Immediateparentsubproject:Item(Features)" PointsOrDays="Days" LowRiskLimit="80" HighRiskLimit="120" ElevateBlockedItems="Yes" ConsiderRiskColumn="No" />
+    
+    <!-- This behavior will track the time when the status field was last changed on items in the product backlog -->
+    <TrackLastStatusChangeBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" TrackingColumn="Status last changed" TrackedColumn="Aggregated status"/>
 
-
-
-
-    <!-- **************************** -->
-    <!-- Customizations for Program 2 -->
-    <!-- **************************** -->
-    <!-- This behavior is applied for all backlog items in the program backlog that have children. It will:
-         - Update the "Velocity (14) days" column to always reflect the velocity over the last 14 days aggregated over the children of the item. Velocity is calculated as completed items where the status
-           was changed over the last 14 days.
-    -->
-    <DeriveBehavior HansoftProject="Program 2" View="Backlog" Find="!Itemtype=&quot;Backlog item&quot;">
-      <CustomColumn Name="Velocity (14 days)" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed) &amp;&amp; ((DateTimeValue)((Task)task).GetCustomColumnValue(&quot;Status last changed&quot;)).ToDateTime() > DateTime.Now.AddDays(-14)  ).Sum(task => ((Task)task).EstimatedDays)" />
-    </DeriveBehavior>
-    <!-- This behavior is applied for all backlog items in the program backlog that are children. It will:
-         - Blank out the "Velocity (14) days" column.
-    -->
-    <DeriveBehavior HansoftProject="Program 2" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
-      <CustomColumn Name="Velocity (14 days)" Expression="&quot;&quot;" />
-    </DeriveBehavior>
-    <!-- This behavior is applied for all backlog items in the program backlog. It will:
-         - Keep the Aggregated status column updated.
-         - Keep the Aggregated estimated days column updated.
-         - Keep the Days completed column updated.
-         - Keep the Completion count column updated.
-    -->
-    <DeriveBehavior HansoftProject="Program 2" View="Backlog" Find="">
-      <CustomColumn Name="Aggregated status" Expression="current_task.AggregatedStatus" />
-      <CustomColumn Name="Aggregated estimated days" Expression="current_task.AggregatedEstimatedDays" />
-      <CustomColumn Name="Days completed" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed)).Sum(task => ((Task)task).EstimatedDays)" />
-      <CustomColumn Name="Completion count" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.CompletionCounter.CompletionCount(current_task)" />
-    </DeriveBehavior>
-    <!-- This behavior is applied for Release items (milestones) in the schedule that are placed in a container named "Features". For these releases all backlog items that are tagged
-         to the release will get the "Release Risk" column set.
-    -->    
-    <AssignReleaseRiskBehavior HansoftProject="Program 2" TrackingColumn="Release risk" RiskValues="Done, Low risk, Medium risk, High risk" Find="Itemtype=Release AND Immediateparentsubproject:Item(Features)" PointsOrDays="Days" LowRiskLimit="80" HighRiskLimit="120" ElevateBlockedItems="Yes" ConsiderRiskColumn="No" />
-    <!-- This behavior will track the time status was last changed on items in the product backlog -->
-    <TrackLastStatusChangeBehavior HansoftProject="Program 2" View="Backlog" TrackingColumn="Status last changed" TrackedColumn="Aggregated status"/>
   </Behaviors>
 </Configuration>

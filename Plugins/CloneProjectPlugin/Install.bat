@@ -1,0 +1,1 @@
+..\ClientPluginInstaller\HansoftClientPluginInstaller.exe -clocalhost:50257:"SAFe - Template":Jean:welcome -icom.hansoft.cloneprojectclientplugin:x86HansoftCloneProjectClientPlugin.dll:amd64HansoftCloneProjectClientPlugin.dll
