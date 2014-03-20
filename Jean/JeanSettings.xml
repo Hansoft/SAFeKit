@@ -36,6 +36,14 @@
       <CustomColumn Name="Feature summary" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.SAFeExtension.FeatureSummary(current_task, false, &quot;Days completed&quot;)" />
       <CustomColumn Name="Theme" Expression="current_task.Parent.Name" />
     </DeriveBehavior>
+    <!-- If you want to use points instead of estimated days to size backlog items in the program backlogs you need to uncomment the following Xml and take away the one above -->
+    <!--
+    <DeriveBehavior HansoftProject="(^Portfolio)" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
+      <CustomColumn Name="Feature summary" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.SAFeExtension.FeatureSummary(current_task, true, &quot;Points completed&quot;)" />
+      <CustomColumn Name="Theme" Expression="current_task.Parent.Name" />
+    </DeriveBehavior>
+    -->
+
 
     <!-- *************************** -->
     <!-- Customizations for Programs -->
@@ -49,6 +57,12 @@
     <DeriveBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" Find="!Itemtype=&quot;Backlog item&quot;">
       <CustomColumn Name="Velocity (14 days)" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed) &amp;&amp; ((DateTimeValue)((Task)task).GetCustomColumnValue(&quot;Status last changed&quot;)).ToDateTime() > DateTime.Now.AddDays(-14)  ).Sum(task => ((Task)task).EstimatedDays)" />
     </DeriveBehavior>
+    <!-- If you want to use points instead of estimated days to size backlog items in the program backlogs you need to uncomment the following Xml and take away the one above -->
+    <!--
+    <DeriveBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" Find="!Itemtype=&quot;Backlog item&quot;">
+      <CustomColumn Name="Velocity (14 days)" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed) &amp;&amp; ((DateTimeValue)((Task)task).GetCustomColumnValue(&quot;Status last changed&quot;)).ToDateTime() > DateTime.Now.AddDays(-14)  ).Sum(task => ((Task)task).Points)" />
+    </DeriveBehavior>
+    -->
     
     <!-- This behavior is applied for all backlog items in the program backlog that are children. It will:
          - Blank out the "Velocity (14) days" column. -->
@@ -67,10 +81,23 @@
       <CustomColumn Name="Days completed" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed)).Sum(task => ((Task)task).EstimatedDays)" />
       <CustomColumn Name="Completion count" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.CompletionCounter.CompletionCount(current_task)" />
     </DeriveBehavior>
+    <!-- If you want to use points instead of estimated days to size backlog items in the program backlogs you need to uncomment the following Xml and take away the one above -->
+    <!--
+    <DeriveBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" Find="">
+      <CustomColumn Name="Aggregated status" Expression="current_task.AggregatedStatus" />
+      <CustomColumn Name="Aggregated points" Expression="current_task.AggregatedPoints" />
+      <CustomColumn Name="Points completed" Expression="current_task.DeepLeaves.FindAll(task => ((Task)task).Status.Equals(EHPMTaskStatus.Completed)).Sum(task => ((Task)task).Points)" />
+      <CustomColumn Name="Completion count" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.CompletionCounter.CompletionCount(current_task)" />
+    </DeriveBehavior>
+    -->
     
     <!-- This behavior is applied for Release items (milestones) in the schedule that are placed in a container named "Features". For these releases all backlog items that are tagged
          to the release will get the "Release Risk" column set. -->
     <AssignReleaseRiskBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" TrackingColumn="Release risk" RiskValues="Done, Low risk, Medium risk, High risk" Find="Itemtype=Release AND Immediateparentsubproject:Item(Features)" PointsOrDays="Days" LowRiskLimit="80" HighRiskLimit="120" ElevateBlockedItems="Yes" ConsiderRiskColumn="No" />
+    <!-- If you want to use points instead of estimated days to size backlog items in the program backlogs you need to uncomment the following Xml and take away the one above -->
+    <!--
+    <AssignReleaseRiskBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" TrackingColumn="Release risk" RiskValues="Done, Low risk, Medium risk, High risk" Find="Itemtype=Release AND Immediateparentsubproject:Item(Features)" PointsOrDays="Points" LowRiskLimit="80" HighRiskLimit="120" ElevateBlockedItems="Yes" ConsiderRiskColumn="No" />
+    -->
     
     <!-- This behavior will track the time when the status field was last changed on items in the product backlog -->
     <TrackLastStatusChangeBehavior HansoftProject="(^Portfolio|^Template - )" InvertedMatch="Yes" View="Backlog" TrackingColumn="Status last changed" TrackedColumn="Aggregated status"/>
