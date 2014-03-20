@@ -33,7 +33,7 @@
            - Update the Feature summary field on epics to reflect changes to linked features
          - - Automatically set the Theme column to the name of the parent item -->
     <DeriveBehavior HansoftProject="(^Portfolio)" View="Backlog" Find="Itemtype=&quot;Backlog item&quot;">
-      <CustomColumn Name="Feature summary" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.SAFeExtension.FeatureSummary(current_task)" />
+      <CustomColumn Name="Feature summary" Expression="Hansoft.Jean.Behavior.DeriveBehavior.Expressions.SAFeExtension.FeatureSummary(current_task, false, &quot;Days completed&quot;)" />
       <CustomColumn Name="Theme" Expression="current_task.Parent.Name" />
     </DeriveBehavior>
 
