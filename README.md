@@ -20,13 +20,12 @@ How to install and configure the kit is described in the document [HansoftScaled
 
 Terms and conditions
 --------------------
-Hansoft Scaled Agile Support Kit by Svante Lidman (Hansoft AB) is licensed under what is known as an MIT
+Hansoft Scaled Agile Support Kit is licensed under what is known as an MIT
 License as stated in the [LICENSE.md](LICENSE.md).
 
 This program is not part of the official Hansoft product or subject to its license agreement.
 The program is provided as is and there is no obligation on Hansoft AB to provide support,
-update or enhance this program. Questions can be sent to svante.lidman@hansoft.com and will
-be answered when other obligations so permit.
+update or enhance this program.
 
 Scaled Agile Framework and SAFe are trademarks of Leffingwell, LLC. These trademarks are only
 used for reference purpose and their use do not imply any kind of endorsement of
